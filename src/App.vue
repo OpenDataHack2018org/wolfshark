@@ -19,20 +19,20 @@ export default {
 
 <style>
 body {
-    background-color: #42b983;
+    background-color: #7addd4;
 }
 
 #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #fff;
+    color: #000;
     margin-top: 60px;
 }
 
 a,
 a:hover {
-    color: #fff;
+    color: #dc3545;
 }
 
 .alert a,
@@ -43,5 +43,9 @@ a:hover {
 .alert-info {
     background-color: #fff;
     color: #000;
+}
+
+.b-table {
+    background-color: #fff;
 }
 </style>

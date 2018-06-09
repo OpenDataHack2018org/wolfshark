@@ -28,6 +28,14 @@ export default new Router({
             path: '/overview',
             name: 'JobOverview',
             component: () => import('@/components/JobOverview'),
+            beforeEnter (to, from, next) {
+                if (store.getters.name) {
+                    next();
+                }
+                else {
+                    next('/config');
+                }
+            },
         },
     ],
 });
