@@ -37,5 +37,18 @@ export default new Router({
                 }
             },
         },
+        {
+            path: '/scheduling',
+            name: 'JobScheduling',
+            component: () => import('@/components/JobScheduling'),
+            beforeEnter (to, from, next) {
+                if (store.getters.name) {
+                    next();
+                }
+                else {
+                    next('/config');
+                }
+            },
+        },
     ],
 });

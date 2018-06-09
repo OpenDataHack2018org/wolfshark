@@ -48,4 +48,8 @@ a:hover {
 .b-table {
     background-color: #fff;
 }
+
+.form-text.text-muted {
+    color: #000 !important;
+}
 </style>

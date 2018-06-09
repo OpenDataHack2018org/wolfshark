@@ -1,13 +1,14 @@
 <template>
     <b-container>
         <b-row>
-            <b-col v-if="!isForgotten">
+            <b-col
+                v-if="!isForgotten"
+                md="5">
                 <h4>Hello there!</h4>
 
                 <p>Please provide your name and API key below.</p>
 
                 <b-form
-                    class="user-config"
                     v-on:submit.prevent="save">
                     <b-form-group>
                         <b-form-input
@@ -42,7 +43,11 @@
                         </b-button>
                     </b-button-group>
                 </b-form>
-                <b-alert class="alert-license mt-5" show>
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col v-if="!isForgotten">
+                <b-alert class="mt-5" show>
                     <h5 class="alert-heading">
                         Did you accept all the licenses under your account?
                     </h5>

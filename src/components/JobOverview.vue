@@ -41,8 +41,14 @@
 
                 <b-button-group>
                     <b-button
+                        to="/scheduling"
+                        variant="primary">
+                        <i class="fa fa-plus" />
+                        Schedule
+                    </b-button>
+                    <b-button
                         v-on:click="refresh"
-                        variant="secondary">
+                        variant="success">
                         <i class="fa fa-sync" />
                         Refresh
                     </b-button>
