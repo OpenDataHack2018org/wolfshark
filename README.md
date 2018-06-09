@@ -1,4 +1,4 @@
-# WolfShark
+# WolfShark (frontend)
 
 > #OpenDataHack2017 @CopernicusECMPWF challenge #10
 > Automated visualization and animation generator based on climate data.
@@ -20,6 +20,8 @@ Different data sets from CDS will be available for choice. Buy querying the CDS 
 
 ## Build Setup
 
+This component is the frontend part of the app. Take a look at backend [repo](https://github.com/dvuckovic/wolfshark-backend) as well for the server part.
+
 ``` bash
 # install dependencies
 npm install
@@ -32,9 +34,6 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
-
-# production mode with hot reload via backend server at localhost:8081
-npm start
 
 # run unit tests
 npm run unit

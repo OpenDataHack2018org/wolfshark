@@ -5,11 +5,10 @@
   "author": "Dusan Vuckovic <dusan@dvuckovic.com>",
   "private": true,
   "scripts": {
-    "dev": "concurrently --kill-others \"npm start\" \"webpack-dev-server --inline --progress --config build/webpack.dev.conf.js\"",
-    "start": "nodemon server/main.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "test": "npm run unit",
-    "lint": "eslint --ext .js,.vue src server build config test/unit",
+    "lint": "eslint --ext .js,.vue src build config test/unit",
     "build": "node build/build.js"
   },
   "dependencies": {
