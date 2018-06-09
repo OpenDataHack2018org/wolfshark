@@ -74,6 +74,7 @@ export default {
         return {
             currentPage: 1,
             perPage: 25,
+            jobs: [],
             fields: [
                 {
                     key: 'title',
@@ -94,13 +95,41 @@ export default {
     computed: {
         ...mapGetters([
             'name',
-            'jobs',
         ]),
     },
 
     methods: {
         refresh () {
-            this.$store.dispatch('getJobs');
+            this.$set(this, 'jobs', [
+                {
+                    job_id: 3,
+                    title: 'Test job 2',
+                    user: 'Toby',
+                    status: 'queued',
+                    _showDetails: false,
+                },
+                {
+                    job_id: 2,
+                    title: 'Test job 2',
+                    user: 'roger',
+                    status: 'processing',
+                    _showDetails: false,
+                },
+                {
+                    job_id: 1,
+                    title: 'Test job 2',
+                    user: 'Awen',
+                    status: 'error',
+                    _showDetails: false,
+                },
+                {
+                    job_id: 0,
+                    title: 'Test job 1',
+                    user: 'milana',
+                    status: 'done',
+                    _showDetails: false,
+                },
+            ]);
         },
 
         getStatusIcon (status) {
