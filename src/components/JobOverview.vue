@@ -1,15 +1,20 @@
 <template>
-    <div class="container">
-        <h4>Welcome back, {{ name }}!</h4>
+    <b-container>
+        <b-row>
+            <b-col>
+                <h4>Welcome back, {{ name }}!</h4>
 
-        <p>Here is a list of current jobs.</p>
+                <p>Here is a list of current jobs.</p>
 
-        <b-button
-            to="/config"
-            variant="secondary">
-            Preferences
-        </b-button>
-    </div>
+                <b-button
+                    to="/config"
+                    variant="secondary">
+                    <i class="fa fa-cog" />
+                    Preferences
+                </b-button>
+            </b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script>

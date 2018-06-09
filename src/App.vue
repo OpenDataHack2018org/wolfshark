@@ -26,12 +26,22 @@ body {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: #fff;
     margin-top: 60px;
 }
 
-a {
+a,
+a:hover {
     color: #fff;
+}
+
+.alert a,
+.alert a:hover {
+    color: #000;
+}
+
+.alert-info {
+    background-color: #fff;
+    color: #000;
 }
 </style>
