@@ -502,7 +502,6 @@ export default {
 
             api.createJob({
                 'user_name': this.$store.getters.name,
-                'user_key': this.$store.getters.apiKey,
                 'title': this.title,
                 'dataset': this.dataset,
                 'area': this.area,

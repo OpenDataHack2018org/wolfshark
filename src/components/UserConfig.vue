@@ -4,7 +4,7 @@
             <b-col v-if="!isForgotten">
                 <LogoHeader>
                     <h4>Hello there!</h4>
-                    <p>Please provide your name and API key below.</p>
+                    <p>Please provide your name first.</p>
                 </LogoHeader>
             </b-col>
         </b-row>
@@ -22,14 +22,6 @@
                             v-model.trim="name" />
                     </b-form-group>
 
-                    <b-form-group>
-                        <b-form-input
-                            required
-                            placeholder="Your API key (incl. UID)"
-                            autocomplete="on"
-                            v-model.trim="apiKey" />
-                    </b-form-group>
-
                     <b-button-group>
                         <b-button
                             type="submit"
@@ -39,7 +31,7 @@
                         </b-button>
 
                         <b-button
-                            v-if="$store.getters.name && $store.getters.apiKey"
+                            v-if="$store.getters.name"
                             v-on:click="forget"
                             variant="danger">
                             <i class="fa fa-times" />
@@ -57,6 +49,7 @@
                     </h5>
                     <p>
                         Please make sure, prior to using this app, to accept all relevant
+                        dataset licenses under your account, so your API key can be immediately
                         dataset licenses under your account, so your API key can be immediately
                         used. Please find (possibly incomplete list) below:
                     </p>
@@ -101,7 +94,6 @@ export default {
     data () {
         return {
             name: this.$store.getters.name,
-            apiKey: this.$store.getters.apiKey,
             isForgotten: false,
             licenseLinks: [
                 {
@@ -129,9 +121,6 @@ export default {
             this.$store.commit('name', {
                 name: this.name,
             });
-            this.$store.commit('apiKey', {
-                apiKey: this.apiKey,
-            });
 
             this.showSuccess();
 
@@ -150,12 +139,8 @@ export default {
             this.$store.commit('name', {
                 name: '',
             });
-            this.$store.commit('apiKey', {
-                apiKey: '',
-            });
 
             this.name = '';
-            this.apiKey = '';
             this.isForgotten = true;
         },
     },
