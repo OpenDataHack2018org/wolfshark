@@ -1,10 +1,7 @@
 import axios from 'axios';
 
-const server = 'localhost';
-let port = 5000;
-if (process.env.NODE_ENV === 'development') {
-    port = 8080;
-}
+const server = window.location.hostname;
+const port = window.location.port;
 
 const api = axios.create({
     baseURL: `http://${server}:${port}/api`,
