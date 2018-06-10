@@ -7,6 +7,9 @@ import router from './router';
 
 Vue.config.productionTip = false;
 
+// Create a separate Vue instance for global event bus and store it in the prototype.
+Vue.prototype.$bus = new Vue();
+
 /* eslint-disable no-new */
 new Vue({
     el: '#app',

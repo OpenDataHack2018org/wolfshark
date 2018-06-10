@@ -26,6 +26,6 @@ img.logo-anim {
 }
 
 img.logo-anim:hover {
-    transform: rotate(360deg);
+    transform: rotate(-360deg);
 }
 </style>

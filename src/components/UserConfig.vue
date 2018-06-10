@@ -133,7 +133,17 @@ export default {
                 apiKey: this.apiKey,
             });
 
+            this.showSuccess();
+
             this.$router.replace('/overview');
+        },
+
+        showSuccess () {
+            this.$bus.$emit('showAlert', {
+                heading: 'Your preferences have been saved!',
+                text: 'Please note that this information is stored only in your browser session.',
+                variant: 'success',
+            });
         },
 
         forget () {

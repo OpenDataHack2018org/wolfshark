@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <NotificationAlert/>
         <router-view/>
     </div>
 </template>
@@ -7,6 +8,7 @@
 <script>
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
+import NotificationAlert from '@/components/NotificationAlert';
 import LogoHeader from '@/components/LogoHeader';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -16,6 +18,10 @@ Vue.component('LogoHeader', LogoHeader);
 
 export default {
     name: 'App',
+
+    components: {
+        NotificationAlert,
+    },
 };
 </script>
 

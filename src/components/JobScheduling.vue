@@ -515,6 +515,8 @@ export default {
                 'resolution': this.width,
             });
 
+            this.showSuccess();
+
             this.$router.push(
                 {
                     name: 'JobOverview',
@@ -523,6 +525,22 @@ export default {
                     },
                 },
             );
+        },
+
+        showSuccess () {
+            this.$bus.$emit('showAlert', {
+                heading: 'Your job has been scheduled!',
+                text: 'Please note that job processing takes some time. Check back here later.',
+                variant: 'success',
+            });
+        },
+
+        showError () {
+            this.$bus.$emit('showAlert', {
+                heading: 'Oops, something went wrong!',
+                text: 'An error was encountered while processing your request. Please try again later.',
+                variant: 'danger',
+            });
         },
     },
 
