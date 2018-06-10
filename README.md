@@ -18,9 +18,18 @@ Different data sets from CDS will be available for choice. Buy querying the CDS 
 - Toby Such - full-stack developer
 - Awen Saunders - full-stack developer
 
+## Backend
+
+This project has a submodule (located in backend/ folder). In order to clone this codebase too, please run following commands after you clone this repo:
+
+```
+git submodule init
+git submodule update
+```
+
 ## Build Setup
 
-This component is the frontend part of the app. Take a look at backend [repo](https://github.com/dvuckovic/wolfshark-backend) as well for the server part.
+This component is the frontend part of the app. 
 
 ``` bash
 # install dependencies
@@ -35,14 +44,7 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
+## Starting the Server
 
-## Backend
+Then, cd to the backend/ folder and check out its README.md file for instructions on starting the server. It is easier if you start the server after building the frontend but it doesn't actually matter.
 
-This project has a submodule (located in backend/ folder). In order to clone this codebase too, please run following commands after you clone this repo:
-
-```
-git submodule init
-git submodule update
-```
-
-Then, cd to the backend/ folder and check out its README.md file too for instructions.
