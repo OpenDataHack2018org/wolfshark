@@ -30,6 +30,7 @@
                         slot-scope="data">
                         <b-button
                             variant="success"
+                            size="sm"
                             v-on:click.stop="download('http://techslides.com/demos/sample-videos/small.mp4')">
                             <i class="fa fa-download" />
                             Download
@@ -115,7 +116,7 @@
                     v-bind:per-page="perPage"
                     v-model="currentPage" />
 
-                <b-button-group>
+                <b-button-group class="mb-5">
                     <b-button
                         to="/scheduling"
                         variant="primary">
