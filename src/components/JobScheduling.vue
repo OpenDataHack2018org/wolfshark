@@ -122,6 +122,7 @@
 
                     <b-button-group class="mb-5">
                         <b-button
+                            v-bind:disabled="Boolean(lengthFeedback.length)"
                             type="submit"
                             variant="primary">
                             <i class="fa fa-cloud-upload-alt" />
@@ -359,9 +360,9 @@ export default {
             ],
             width: 4000,
             startDate: '',
-            startTime: '',
+            startTime: '00:00',
             endDate: '',
-            endTime: '',
+            endTime: '00:00',
             interval: 24,
             intervalOptions: [
                 {
@@ -512,7 +513,15 @@ export default {
                 'format': this.format,
                 'resolution': this.width,
             });
-            this.$router.push('/overview');
+
+            this.$router.push(
+                {
+                    name: 'JobOverview',
+                    params: {
+                        showSuccess: true,
+                    },
+                },
+            );
         },
     },
 

@@ -2,9 +2,14 @@
     <b-container>
         <b-row>
             <b-col>
-                <h4>Welcome back, {{ name }}!</h4>
-
-                <p>Here is a list of current jobs.</p>
+                <template v-if="success">
+                    <h4>{{ name }}, your job has been queued!</h4>
+                    <p>Please note that job processing can take certain amount of time.</p>
+                </template>
+                <template v-else>
+                    <h4>Welcome back, {{ name }}!</h4>
+                    <p>Here is a list of current jobs.</p>
+                </template>
 
                 <b-table
                     v-bind:items="jobs"
@@ -124,7 +129,7 @@
                         Schedule
                     </b-button>
                     <b-button
-                        v-on:click="refresh"
+                        v-on:click="refresh(true)"
                         variant="success">
                         <i class="fa fa-sync" />
                         Refresh
@@ -147,11 +152,19 @@ import { mapGetters } from 'vuex';
 export default {
     name: 'JobOverview',
 
+    props: {
+        showSuccess: {
+            type: Boolean,
+            default: false,
+        },
+    },
+
     data () {
         return {
             currentPage: 1,
             perPage: 10,
             jobs: [],
+            success: this.showSuccess,
             fields: [
                 {
                     key: 'title',
@@ -179,7 +192,11 @@ export default {
     },
 
     methods: {
-        refresh () {
+        refresh (reset) {
+            if (reset) {
+                this.success = false;
+            }
+
             this.$set(this, 'jobs', [
                 {
                     job_id: 3,
