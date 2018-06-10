@@ -144,6 +144,7 @@
 </template>
 
 <script>
+import api from '@/services/api';
 import moment from 'moment';
 
 export default {
@@ -499,7 +500,7 @@ export default {
                 return;
             }
 
-            console.log({
+            api.createJob({
                 'user_name': this.$store.getters.name,
                 'user_key': this.$store.getters.apiKey,
                 'title': this.title,
@@ -513,18 +514,15 @@ export default {
                 'output': this.output,
                 'format': this.format,
                 'resolution': this.width,
+            }).then((response) => {
+                console.log(response);
+                this.showSuccess();
+            }).catch((error) => {
+                console.error(error);
+                this.showError();
             });
 
-            this.showSuccess();
-
-            this.$router.push(
-                {
-                    name: 'JobOverview',
-                    params: {
-                        message: 'success',
-                    },
-                },
-            );
+            this.$router.push('/overview');
         },
 
         showSuccess () {

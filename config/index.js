@@ -11,7 +11,11 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/api': {
-                target: 'http://localhost:8081',
+                target: 'http://localhost:5000',
+                xfwd: true,
+            },
+            '/videos': {
+                target: 'http://localhost:5000',
                 xfwd: true,
             },
         },

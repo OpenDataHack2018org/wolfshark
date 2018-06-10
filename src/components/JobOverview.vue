@@ -27,7 +27,7 @@
                     <template
                         slot="status"
                         slot-scope="data">
-                        <span v-bind:title="data.value">
+                        <span v-bind:title="statusCodesLookup[data.value].toLowerCase">
                             <i
                                 class="fa"
                                 v-bind:class="getStatusClasses(data.value)"
@@ -38,11 +38,15 @@
                         slot="download"
                         slot-scope="data">
                         <b-button
-                            v-if="data.item.status === 'done'"
+                            v-if="data.item.status === statusCodes.COMPLETED"
                             variant="success"
                             size="sm"
                             block
-                            v-on:click.stop="download('http://techslides.com/demos/sample-videos/small.mp4')">
+                            v-on:click.stop="download(
+                                `/videos/${data.item.job_id}.mp4`,
+                                data.item.title,
+                                data.item.format
+                        )">
                             <i class="fa fa-download" />
                             Download
                         </b-button>
@@ -80,7 +84,7 @@
                                         </tr>
                                         <tr>
                                             <th>Theme</th>
-                                            <td>{{ data.item.theme }}</td>
+                                            <td>{{ themeCodesLookup[data.item.theme] }}</td>
                                         </tr>
                                         <tr>
                                             <th>Speed</th>
@@ -88,7 +92,7 @@
                                         </tr>
                                         <tr>
                                             <th>Output</th>
-                                            <td>{{ data.item.output }}</td>
+                                            <td>{{ outputCodesLookup[data.item.output] }}</td>
                                         </tr>
                                         <tr>
                                             <th>Format</th>
@@ -102,19 +106,19 @@
                                 </table>
                             </b-col>
                             <b-col
-                                v-if="data.item.status === 'done'"
+                                v-if="data.item.status === statusCodes.COMPLETED"
                                 md="6">
                                 <b-embed
-                                    v-if="data.item.format === 'MP4'"
+                                    v-if="data.item.format === 'mp4'"
                                     type="video"
                                     controls>
                                     <source
-                                        src="http://techslides.com/demos/sample-videos/small.mp4"
+                                        v-bind:src="`/videos/${data.item.job_id}.mp4`"
                                         type="video/mp4"/>
                                 </b-embed>
                                 <img
                                     v-else
-                                    src="@/assets/news_18-02-13-ens_con_pv320_animaion.gif"
+                                    v-bind:src="`/videos/${data.item.job_id}.mp4`"
                                     width="100%"/>
                             </b-col>
                         </b-row>
@@ -179,6 +183,8 @@
 </template>
 
 <script>
+import { kebabCase } from 'lodash';
+import api from '@/services/api';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -186,6 +192,9 @@ export default {
 
     data () {
         return {
+            ...api.host(),
+            ...api.codes(),
+            ...api.codeLookup(),
             filter: '',
             isBusy: false,
             jobsLength: 0,
@@ -218,96 +227,43 @@ export default {
     },
 
     methods: {
-
         getJobs () {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    this.jobsLength = 4;
-                    resolve(
-                        [
-                            {
-                                job_id: 3,
-                                user_name: 'Toby',
-                                title: 'Test job 4',
-                                dataset: 'ERA5 Geopotential on 1000 hPa',
-                                area: 'WORLD',
-                                start_date_time: '2018-06-09 00:00',
-                                end_date_time: '2018-06-10 00:00',
-                                interval: '1',
-                                theme: 'dark',
-                                speed: 15,
-                                output: 'globe',
-                                format: 'MP4',
-                                status: 'queued',
-                                resolution: 4000,
-                                _showDetails: false,
-                            },
-                            {
-                                job_id: 2,
-                                user_name: 'roger',
-                                title: 'Test job 3',
-                                dataset: 'ERA5 Geopotential on 1000 hPa',
-                                area: 'WORLD',
-                                start_date_time: '2018-06-09 00:00',
-                                end_date_time: '2018-06-10 00:00',
-                                interval: '1',
-                                theme: 'dark',
-                                speed: 15,
-                                output: 'globe',
-                                format: 'MP4',
-                                status: 'processing',
-                                resolution: 4000,
-                                _showDetails: false,
-                            },
-                            {
-                                job_id: 1,
-                                user_name: 'Awen',
-                                title: 'Test job 2',
-                                dataset: 'ERA5 Geopotential on 1000 hPa',
-                                area: 'WORLD',
-                                start_date_time: '2018-06-09 00:00',
-                                end_date_time: '2018-06-10 00:00',
-                                interval: '1',
-                                theme: 'dark',
-                                speed: 15,
-                                output: 'globe',
-                                format: 'MP4',
-                                status: 'done',
-                                resolution: 4000,
-                                _showDetails: false,
-                            },
-                            {
-                                job_id: 0,
-                                user_name: 'milana',
-                                title: 'Test job 1',
-                                dataset: 'ERA5 Geopotential on 1000 hPa',
-                                area: 'WORLD',
-                                start_date_time: '2018-06-09 00:00',
-                                end_date_time: '2018-06-10 00:00',
-                                interval: '1',
-                                theme: 'dark',
-                                speed: 15,
-                                output: 'globe',
-                                format: 'GIF',
-                                status: 'done',
-                                resolution: 4000,
-                                _showDetails: false,
-                            },
-                        ],
-                    );
-                }, 2000);
+            return api.getJobs().then((jobs) => {
+                if (!jobs || !Array.isArray(jobs.data)) {
+                    this.showError();
+                    return [];
+                }
+
+                jobs.data.forEach((job) => {
+                    /* eslint-disable-next-line no-param-reassign */
+                    job._showDetails = false;
+                });
+
+                return jobs.data;
+            });
+        },
+
+        api () {
+            return api;
+        },
+
+        showError () {
+            this.$bus.$emit('showAlert', {
+                heading: 'Oops, something went wrong!',
+                text: 'An error was encountered while processing your request. Please try again later.',
+                variant: 'danger',
             });
         },
 
         getStatusIcon (status) {
             let icon;
             switch (status) {
-                case 'processing':
+                case this.statusCodes.PROCESSING:
                     icon = 'circle-notch';
                     break;
-                case 'queued':
-                case 'done':
-                case 'error':
+                case this.statusCodes.QUEUED:
+                case this.statusCodes.COMPLETED:
+                case this.statusCodes.ERROR:
                 default:
                     icon = 'circle';
             }
@@ -318,16 +274,16 @@ export default {
         getStatusColor (status) {
             let color;
             switch (status) {
-                case 'processing':
+                case `${this.statusCodes.PROCESSING}`:
                     color = '#ff6a00';
                     break;
-                case 'done':
+                case `${this.statusCodes.COMPLETED}`:
                     color = '#00af17';
                     break;
-                case 'error':
+                case `${this.statusCodes.ERROR}`:
                     color = '#d00000';
                     break;
-                case 'queued':
+                case `${this.statusCodes.QUEUED}`:
                 default:
                     color = '#fa0';
             }
@@ -338,12 +294,12 @@ export default {
         getStatusAnimation (status) {
             let anim;
             switch (status) {
-                case 'processing':
+                case `${this.statusCodes.PROCESSING}`:
                     anim = 'spin';
                     break;
-                case 'queued':
-                case 'done':
-                case 'error':
+                case `${this.statusCodes.QUEUED}`:
+                case `${this.statusCodes.COMPLETED}`:
+                case `${this.statusCodes.ERROR}`:
                 default:
                     anim = '';
             }
@@ -366,11 +322,12 @@ export default {
             item._showDetails = !item._showDetails;
         },
 
-        download (href) {
+        download (href, title, format) {
+            const filename = `${kebabCase(title)}.${format}`;
             const link = document.createElement('a');
             link.href = href;
             link.setAttribute('target', '_blank');
-            link.setAttribute('download', true);
+            link.setAttribute('download', filename);
             document.body.appendChild(link);
             link.click();
             link.remove();
