@@ -27,7 +27,7 @@
                     <template
                         slot="status"
                         slot-scope="data">
-                        <span v-bind:title="statusCodesLookup[data.value].toLowerCase">
+                        <span v-bind:title="statusCodesLookup[data.value].toLowerCase()">
                             <i
                                 class="fa"
                                 v-bind:class="getStatusClasses(data.value)"
@@ -195,6 +195,7 @@ export default {
             ...api.host(),
             ...api.codes(),
             ...api.codeLookup(),
+            setIntervalId: null,
             filter: '',
             isBusy: false,
             jobsLength: 0,
@@ -338,6 +339,16 @@ export default {
             this.jobsLength = filteredItems.length;
             this.currentPage = 1;
         },
+    },
+
+    created () {
+        this.setIntervalId = setInterval(() => {
+            this.$refs.jobsTable.refresh();
+        }, 60000);
+    },
+
+    beforeDestroy () {
+        clearInterval(this.setIntervalId);
     },
 };
 </script>
