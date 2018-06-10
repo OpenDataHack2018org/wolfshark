@@ -462,7 +462,7 @@ export default {
                 || !this.interval
                 || !this.speed
             ) {
-                return 'Please select all relevant fields first.';
+                return 'Please fill all relevant fields first.';
             }
 
             if (
@@ -553,6 +553,14 @@ export default {
             }
             else {
                 this.$delete(this.outputOptions[0], 'disabled');
+            }
+        },
+
+        startTime (newValue) {
+            if (!/:00$/.test(newValue)) {
+                this.$nextTick(() => {
+                    this.startTime = newValue.replace(/:[0-9]+$/, ':00');
+                });
             }
         },
     },
