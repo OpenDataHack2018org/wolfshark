@@ -203,8 +203,7 @@ export default {
             isBusy: false,
             jobsLength: 0,
             currentPage: 1,
-            perPage: 2,
-            // jobs: [],
+            perPage: 10,
             success: this.showSuccess,
             fields: [
                 {

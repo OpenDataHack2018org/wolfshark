@@ -21,7 +21,7 @@ export default {
 
 <style>
 body {
-    background-color: #7addd4;
+    background-color: #7addd4 !important;
 }
 
 #app {
@@ -43,12 +43,12 @@ a:hover {
 }
 
 .alert-info {
-    background-color: #fff;
-    color: #000;
+    background-color: #fff !important;
+    color: #000 !important;
 }
 
 .b-table {
-    background-color: #fff;
+    background-color: #fff !important;
 }
 
 .form-text.text-muted {
