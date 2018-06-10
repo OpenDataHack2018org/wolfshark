@@ -34,10 +34,15 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
-
-# run unit tests
-npm run unit
-
-# run all tests
-npm test
 ```
+
+## Backend
+
+This project has a submodule (located in backend/ folder). In order to clone this codebase too, please run following commands after you clone this repo:
+
+```
+git submodule init
+git submodule update
+```
+
+Then, cd to the backend/ folder and check out its README.md file too for instructions.
