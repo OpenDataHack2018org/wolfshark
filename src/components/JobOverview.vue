@@ -2,14 +2,16 @@
     <b-container>
         <b-row>
             <b-col>
-                <template v-if="success">
-                    <h4>{{ name }}, your job has been queued!</h4>
-                    <p>Please note that job processing can take certain amount of time.</p>
-                </template>
-                <template v-else>
-                    <h4>Welcome back, {{ name }}!</h4>
-                    <p>Here is a list of current jobs.</p>
-                </template>
+                <LogoHeader>
+                    <template v-if="success">
+                        <h4>{{ name }}, your job has been queued!</h4>
+                        <p>Please note that job processing can take certain amount of time.</p>
+                    </template>
+                    <template v-else>
+                        <h4>Welcome back, {{ name }}!</h4>
+                        <p>Here is a list of current jobs.</p>
+                    </template>
+                </LogoHeader>
 
                 <b-table
                     v-bind:items="jobs"
@@ -36,6 +38,7 @@
                         <b-button
                             variant="success"
                             size="sm"
+                            v-if="data.item.status === 'done'"
                             v-on:click.stop="download('http://techslides.com/demos/sample-videos/small.mp4')">
                             <i class="fa fa-download" />
                             Download
@@ -96,7 +99,7 @@
                                 </table>
                             </b-col>
                             <b-col
-                                v-if="data.item.result"
+                                v-if="data.item.status === 'done'"
                                 md="6">
                                 <b-embed
                                     v-if="data.item.format === 'MP4'"
@@ -245,9 +248,8 @@ export default {
                     speed: 15,
                     output: 'globe',
                     format: 'MP4',
-                    status: 'error',
+                    status: 'done',
                     resolution: 4000,
-                    result: 'out.mp4',
                     _showDetails: false,
                 },
                 {
@@ -265,7 +267,6 @@ export default {
                     format: 'GIF',
                     status: 'done',
                     resolution: 4000,
-                    result: 'news_18-02-13-ens_con_pv320_animaion.gif',
                     _showDetails: false,
                 },
             ]);

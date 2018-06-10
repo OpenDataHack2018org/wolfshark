@@ -3,9 +3,10 @@
         <b-form v-on:submit.prevent="submit">
             <b-row>
                 <b-col>
-                    <h4>Let's schedule a job :)</h4>
-
-                    <p>Please provide values for all parameters below.</p>
+                    <LogoHeader>
+                        <h4>Let's schedule a job :)</h4>
+                        <p>Please provide values for all parameters below.</p>
+                    </LogoHeader>
 
                     <b-form-group label="Title">
                         <b-form-input

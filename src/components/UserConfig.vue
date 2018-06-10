@@ -1,13 +1,17 @@
 <template>
     <b-container>
         <b-row>
+            <b-col v-if="!isForgotten">
+                <LogoHeader>
+                    <h4>Hello there!</h4>
+                    <p>Please provide your name and API key below.</p>
+                </LogoHeader>
+            </b-col>
+        </b-row>
+        <b-row>
             <b-col
                 v-if="!isForgotten"
-                md="5">
-                <h4>Hello there!</h4>
-
-                <p>Please provide your name and API key below.</p>
-
+                md="6">
                 <b-form
                     v-on:submit.prevent="save">
                     <b-form-group>
@@ -74,9 +78,10 @@
                 </b-alert>
             </b-col>
             <b-col v-else>
-                <h4>Sad to see you go :(</h4>
-
-                <p>Come back again soon.</p>
+                <LogoHeader>
+                    <h4>Sad to see you go :(</h4>
+                    <p>Come back again soon.</p>
+                </LogoHeader>
 
                 <b-button
                     v-on:click="isForgotten = false"

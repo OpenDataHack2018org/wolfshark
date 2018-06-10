@@ -7,10 +7,12 @@
 <script>
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
+import LogoHeader from '@/components/LogoHeader';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.use(BootstrapVue);
+Vue.component('LogoHeader', LogoHeader);
 
 export default {
     name: 'App',
