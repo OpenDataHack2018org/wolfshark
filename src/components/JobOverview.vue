@@ -14,14 +14,22 @@
                 </LogoHeader>
 
                 <b-table
-                    v-bind:items="jobs"
+                    ref="jobsTable"
+                    v-bind:filter="filter"
+                    v-bind:items="getJobs"
                     v-bind:fields="fields"
                     v-bind:current-page="currentPage"
                     v-bind:per-page="perPage"
+                    v-bind:busy.sync="isBusy"
                     striped
                     hover
                     fixed
-                    v-on:row-clicked="showDetails">
+                    show-empty
+                    no-provider-paging
+                    no-provider-sorting
+                    no-provider-filtering
+                    v-on:row-clicked="showDetails"
+                    v-on:filtered="onFiltered">
                     <template
                         slot="status"
                         slot-scope="data">
@@ -36,9 +44,10 @@
                         slot="download"
                         slot-scope="data">
                         <b-button
+                            v-if="data.item.status === 'done'"
                             variant="success"
                             size="sm"
-                            v-if="data.item.status === 'done'"
+                            block
                             v-on:click.stop="download('http://techslides.com/demos/sample-videos/small.mp4')">
                             <i class="fa fa-download" />
                             Download
@@ -118,32 +127,58 @@
                     </template>
                 </b-table>
 
-                <b-pagination
-                    v-if="jobs.length > perPage"
-                    v-bind:total-rows="jobs.length"
-                    v-bind:per-page="perPage"
-                    v-model="currentPage" />
-
-                <b-button-group class="mb-5">
-                    <b-button
-                        to="/scheduling"
-                        variant="primary">
-                        <i class="fa fa-plus" />
-                        Schedule
-                    </b-button>
-                    <b-button
-                        v-on:click="refresh(true)"
-                        variant="success">
-                        <i class="fa fa-sync" />
-                        Refresh
-                    </b-button>
-                    <b-button
-                        to="/config"
-                        variant="secondary">
-                        <i class="fa fa-cog" />
-                        Preferences
-                    </b-button>
-                </b-button-group>
+                <b-form-row>
+                    <b-col md="6">
+                        <b-button-group class="mb-5">
+                            <b-button
+                                to="/scheduling"
+                                variant="primary">
+                                <i class="fa fa-plus" />
+                                Schedule
+                            </b-button>
+                            <b-button
+                                v-on:click="$refs.jobsTable.refresh()"
+                                variant="success">
+                                <i
+                                    class="fa fa-sync"
+                                    v-bind:class="{ 'fa-spin': isBusy }" />
+                                Refresh
+                            </b-button>
+                            <b-button
+                                to="/config"
+                                variant="secondary">
+                                <i class="fa fa-cog" />
+                                Preferences
+                            </b-button>
+                        </b-button-group>
+                    </b-col>
+                    <b-col md="4" offset-md="2">
+                        <b-form-group>
+                            <b-input-group>
+                                <b-form-input
+                                    v-model="filter"
+                                    placeholder="Filter" />
+                                <b-input-group-append>
+                                    <b-button
+                                        v-bind:disabled="!filter"
+                                        v-on:click="filter = ''">
+                                        Clear
+                                    </b-button>
+                                </b-input-group-append>
+                            </b-input-group>
+                        </b-form-group>
+                    </b-col>
+                </b-form-row>
+                <b-form-row>
+                    <b-col>
+                        <b-pagination
+                            v-if="jobsLength > perPage"
+                            v-bind:total-rows="jobsLength"
+                            v-bind:per-page="perPage"
+                            v-model="currentPage"
+                            align="center" />
+                    </b-col>
+                </b-form-row>
             </b-col>
         </b-row>
     </b-container>
@@ -164,9 +199,12 @@ export default {
 
     data () {
         return {
+            filter: '',
+            isBusy: false,
+            jobsLength: 0,
             currentPage: 1,
-            perPage: 10,
-            jobs: [],
+            perPage: 2,
+            // jobs: [],
             success: this.showSuccess,
             fields: [
                 {
@@ -195,81 +233,85 @@ export default {
     },
 
     methods: {
-        refresh (reset) {
-            if (reset) {
-                this.success = false;
-            }
 
-            this.$set(this, 'jobs', [
-                {
-                    job_id: 3,
-                    user_name: 'Toby',
-                    title: 'Test job 4',
-                    dataset: 'ERA5 Geopotential on 1000 hPa',
-                    area: 'WORLD',
-                    start_date_time: '2018-06-09 00:00',
-                    end_date_time: '2018-06-10 00:00',
-                    interval: '1',
-                    theme: 'dark',
-                    speed: 15,
-                    output: 'globe',
-                    format: 'MP4',
-                    status: 'queued',
-                    resolution: 4000,
-                    _showDetails: false,
-                },
-                {
-                    job_id: 2,
-                    user_name: 'roger',
-                    title: 'Test job 3',
-                    dataset: 'ERA5 Geopotential on 1000 hPa',
-                    area: 'WORLD',
-                    start_date_time: '2018-06-09 00:00',
-                    end_date_time: '2018-06-10 00:00',
-                    interval: '1',
-                    theme: 'dark',
-                    speed: 15,
-                    output: 'globe',
-                    format: 'MP4',
-                    status: 'processing',
-                    resolution: 4000,
-                    _showDetails: false,
-                },
-                {
-                    job_id: 1,
-                    user_name: 'Awen',
-                    title: 'Test job 2',
-                    dataset: 'ERA5 Geopotential on 1000 hPa',
-                    area: 'WORLD',
-                    start_date_time: '2018-06-09 00:00',
-                    end_date_time: '2018-06-10 00:00',
-                    interval: '1',
-                    theme: 'dark',
-                    speed: 15,
-                    output: 'globe',
-                    format: 'MP4',
-                    status: 'done',
-                    resolution: 4000,
-                    _showDetails: false,
-                },
-                {
-                    job_id: 0,
-                    user_name: 'milana',
-                    title: 'Test job 1',
-                    dataset: 'ERA5 Geopotential on 1000 hPa',
-                    area: 'WORLD',
-                    start_date_time: '2018-06-09 00:00',
-                    end_date_time: '2018-06-10 00:00',
-                    interval: '1',
-                    theme: 'dark',
-                    speed: 15,
-                    output: 'globe',
-                    format: 'GIF',
-                    status: 'done',
-                    resolution: 4000,
-                    _showDetails: false,
-                },
-            ]);
+        getJobs () {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    this.jobsLength = 4;
+                    resolve(
+                        [
+                            {
+                                job_id: 3,
+                                user_name: 'Toby',
+                                title: 'Test job 4',
+                                dataset: 'ERA5 Geopotential on 1000 hPa',
+                                area: 'WORLD',
+                                start_date_time: '2018-06-09 00:00',
+                                end_date_time: '2018-06-10 00:00',
+                                interval: '1',
+                                theme: 'dark',
+                                speed: 15,
+                                output: 'globe',
+                                format: 'MP4',
+                                status: 'queued',
+                                resolution: 4000,
+                                _showDetails: false,
+                            },
+                            {
+                                job_id: 2,
+                                user_name: 'roger',
+                                title: 'Test job 3',
+                                dataset: 'ERA5 Geopotential on 1000 hPa',
+                                area: 'WORLD',
+                                start_date_time: '2018-06-09 00:00',
+                                end_date_time: '2018-06-10 00:00',
+                                interval: '1',
+                                theme: 'dark',
+                                speed: 15,
+                                output: 'globe',
+                                format: 'MP4',
+                                status: 'processing',
+                                resolution: 4000,
+                                _showDetails: false,
+                            },
+                            {
+                                job_id: 1,
+                                user_name: 'Awen',
+                                title: 'Test job 2',
+                                dataset: 'ERA5 Geopotential on 1000 hPa',
+                                area: 'WORLD',
+                                start_date_time: '2018-06-09 00:00',
+                                end_date_time: '2018-06-10 00:00',
+                                interval: '1',
+                                theme: 'dark',
+                                speed: 15,
+                                output: 'globe',
+                                format: 'MP4',
+                                status: 'done',
+                                resolution: 4000,
+                                _showDetails: false,
+                            },
+                            {
+                                job_id: 0,
+                                user_name: 'milana',
+                                title: 'Test job 1',
+                                dataset: 'ERA5 Geopotential on 1000 hPa',
+                                area: 'WORLD',
+                                start_date_time: '2018-06-09 00:00',
+                                end_date_time: '2018-06-10 00:00',
+                                interval: '1',
+                                theme: 'dark',
+                                speed: 15,
+                                output: 'globe',
+                                format: 'GIF',
+                                status: 'done',
+                                resolution: 4000,
+                                _showDetails: false,
+                            },
+                        ],
+                    );
+                }, 2000);
+            });
         },
 
         getStatusIcon (status) {
@@ -348,10 +390,12 @@ export default {
             link.click();
             link.remove();
         },
-    },
 
-    mounted () {
-        this.refresh();
+        onFiltered (filteredItems) {
+            // Trigger pagination to update the number of buttons/pages due to filtering.
+            this.jobsLength = filteredItems.length;
+            this.currentPage = 1;
+        },
     },
 };
 </script>

@@ -519,7 +519,7 @@ export default {
                 {
                     name: 'JobOverview',
                     params: {
-                        showSuccess: true,
+                        message: 'success',
                     },
                 },
             );
