@@ -510,6 +510,7 @@ export default {
                 'speed': this.speed,
                 'output': this.output,
                 'format': this.format,
+                'resolution': this.width,
             });
             this.$router.push('/overview');
         },

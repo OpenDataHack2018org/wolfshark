@@ -13,7 +13,6 @@
                     v-bind:per-page="perPage"
                     striped
                     hover
-                    small
                     fixed
                     v-on:row-clicked="showDetails">
                     <template
@@ -27,9 +26,86 @@
                         </span>
                     </template>
                     <template
+                        slot="download"
+                        slot-scope="data">
+                        <b-button
+                            variant="success"
+                            v-on:click.stop="download('http://techslides.com/demos/sample-videos/small.mp4')">
+                            <i class="fa fa-download" />
+                            Download
+                        </b-button>
+                    </template>
+                    <template
                         slot="row-details"
                         slot-scope="data">
-                        details
+                        <b-row>
+                            <b-col md="6">
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <th>Job ID</th>
+                                            <td>{{ data.item.job_id }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Dataset</th>
+                                            <td>{{ data.item.dataset }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Area</th>
+                                            <td>{{ data.item.area }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Start Date</th>
+                                            <td>{{ data.item.start_date_time }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>End Date</th>
+                                            <td>{{ data.item.end_date_time }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Interval</th>
+                                            <td>{{ data.item.interval }} hour(s)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Theme</th>
+                                            <td>{{ data.item.theme }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Speed</th>
+                                            <td>{{ data.item.speed }} fps</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Output</th>
+                                            <td>{{ data.item.output }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Format</th>
+                                            <td>{{ data.item.format }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Width</th>
+                                            <td>{{ data.item.resolution }} px</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </b-col>
+                            <b-col
+                                v-if="data.item.result"
+                                md="6">
+                                <b-embed
+                                    v-if="data.item.format === 'MP4'"
+                                    type="video"
+                                    controls>
+                                    <source
+                                        src="http://techslides.com/demos/sample-videos/small.mp4"
+                                        type="video/mp4"/>
+                                </b-embed>
+                                <img
+                                    v-else
+                                    src="@/assets/news_18-02-13-ens_con_pv320_animaion.gif"
+                                    width="100%"/>
+                            </b-col>
+                        </b-row>
                     </template>
                 </b-table>
 
@@ -73,7 +149,7 @@ export default {
     data () {
         return {
             currentPage: 1,
-            perPage: 25,
+            perPage: 10,
             jobs: [],
             fields: [
                 {
@@ -81,12 +157,15 @@ export default {
                     sortable: true,
                 },
                 {
-                    key: 'user',
+                    key: 'user_name',
                     sortable: true,
                 },
                 {
                     key: 'status',
                     sortable: true,
+                },
+                {
+                    key: 'download',
                 },
             ],
         };
@@ -103,30 +182,72 @@ export default {
             this.$set(this, 'jobs', [
                 {
                     job_id: 3,
-                    title: 'Test job 2',
-                    user: 'Toby',
+                    user_name: 'Toby',
+                    title: 'Test job 4',
+                    dataset: 'ERA5 Geopotential on 1000 hPa',
+                    area: 'WORLD',
+                    start_date_time: '2018-06-09 00:00',
+                    end_date_time: '2018-06-10 00:00',
+                    interval: '1',
+                    theme: 'dark',
+                    speed: 15,
+                    output: 'globe',
+                    format: 'MP4',
                     status: 'queued',
+                    resolution: 4000,
                     _showDetails: false,
                 },
                 {
                     job_id: 2,
-                    title: 'Test job 2',
-                    user: 'roger',
+                    user_name: 'roger',
+                    title: 'Test job 3',
+                    dataset: 'ERA5 Geopotential on 1000 hPa',
+                    area: 'WORLD',
+                    start_date_time: '2018-06-09 00:00',
+                    end_date_time: '2018-06-10 00:00',
+                    interval: '1',
+                    theme: 'dark',
+                    speed: 15,
+                    output: 'globe',
+                    format: 'MP4',
                     status: 'processing',
+                    resolution: 4000,
                     _showDetails: false,
                 },
                 {
                     job_id: 1,
+                    user_name: 'Awen',
                     title: 'Test job 2',
-                    user: 'Awen',
+                    dataset: 'ERA5 Geopotential on 1000 hPa',
+                    area: 'WORLD',
+                    start_date_time: '2018-06-09 00:00',
+                    end_date_time: '2018-06-10 00:00',
+                    interval: '1',
+                    theme: 'dark',
+                    speed: 15,
+                    output: 'globe',
+                    format: 'MP4',
                     status: 'error',
+                    resolution: 4000,
+                    result: 'out.mp4',
                     _showDetails: false,
                 },
                 {
                     job_id: 0,
+                    user_name: 'milana',
                     title: 'Test job 1',
-                    user: 'milana',
+                    dataset: 'ERA5 Geopotential on 1000 hPa',
+                    area: 'WORLD',
+                    start_date_time: '2018-06-09 00:00',
+                    end_date_time: '2018-06-10 00:00',
+                    interval: '1',
+                    theme: 'dark',
+                    speed: 15,
+                    output: 'globe',
+                    format: 'GIF',
                     status: 'done',
+                    resolution: 4000,
+                    result: 'news_18-02-13-ens_con_pv320_animaion.gif',
                     _showDetails: false,
                 },
             ]);
@@ -197,6 +318,16 @@ export default {
         showDetails (item) {
             /* eslint-disable-next-line no-param-reassign */
             item._showDetails = !item._showDetails;
+        },
+
+        download (href) {
+            const link = document.createElement('a');
+            link.href = href;
+            link.setAttribute('target', '_blank');
+            link.setAttribute('download', true);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
         },
     },
 
