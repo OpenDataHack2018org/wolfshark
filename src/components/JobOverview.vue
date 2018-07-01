@@ -84,7 +84,7 @@
                                         </tr>
                                         <tr>
                                             <th>Theme</th>
-                                            <td>{{ themeCodesLookup[data.item.theme] }}</td>
+                                            <td>{{ data.item.theme ? 'dark' : 'light' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Speed</th>
@@ -294,15 +294,15 @@ export default {
 
         getStatusAnimation (status) {
             let anim;
-            switch (status) {
+            switch (`${status}`) {
                 case `${this.statusCodes.PROCESSING}`:
-                    anim = 'spin';
+                    anim = true;
                     break;
                 case `${this.statusCodes.QUEUED}`:
                 case `${this.statusCodes.COMPLETED}`:
                 case `${this.statusCodes.ERROR}`:
                 default:
-                    anim = '';
+                    anim = false;
             }
 
             return anim;

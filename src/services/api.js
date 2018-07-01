@@ -26,10 +26,6 @@ export default {
                 SCREEN: 1,
                 GLOBE: 2,
             },
-            themeCodes: {
-                DARK: 1,
-                LIGHT: 2,
-            },
         };
     },
 
@@ -44,10 +40,6 @@ export default {
             outputCodesLookup: {
                 1: 'SCREEN',
                 2: 'GLOBE',
-            },
-            themeCodesLookup: {
-                1: 'DARK',
-                2: 'LIGHT',
             },
         };
     },
