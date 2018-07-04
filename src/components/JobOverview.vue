@@ -43,7 +43,7 @@
                             size="sm"
                             block
                             v-on:click.stop="download(
-                                `/videos/${data.item.job_id}.mp4`,
+                                `/static/videos/${data.item.job_id}.mp4`,
                                 data.item.title,
                                 data.item.format
                         )">
@@ -113,12 +113,12 @@
                                     type="video"
                                     controls>
                                     <source
-                                        v-bind:src="`/videos/${data.item.job_id}.mp4`"
+                                        v-bind:src="`/static/videos/${data.item.job_id}.mp4`"
                                         type="video/mp4"/>
                                 </b-embed>
                                 <img
                                     v-else
-                                    v-bind:src="`/videos/${data.item.job_id}.mp4`"
+                                    v-bind:src="`/static/videos/${data.item.job_id}.mp4`"
                                     width="100%"/>
                             </b-col>
                         </b-row>

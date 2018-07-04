@@ -14,10 +14,6 @@ module.exports = {
                 target: 'http://localhost:5000',
                 xfwd: true,
             },
-            '/videos': {
-                target: 'http://localhost:5000',
-                xfwd: true,
-            },
         },
 
         // Various Dev Server settings
