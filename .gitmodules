@@ -1,3 +1,3 @@
 [submodule "backend"]
 	path = backend
-	url = git@github.com:dvuckovic/wolfshark-backend.git
+	url = git@github.com:OpenDataHack2018org/wolfshark-backend.git
