@@ -44,7 +44,27 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
+
 ## Starting the Server
 
 Then, cd to the backend/ folder and check out its README.md file for instructions on starting the server. It is easier if you start the server after building the frontend but it doesn't actually matter.
+
+## Docker Support
+
+Alternatively, you can use the docker image, please start it with following command:
+
+```
+docker run --name wolfshark -d -p 5000:5000 -e API_KEY=<UID>:<KEY> dvuckovic/wolfshark:latest
+```
+
+where <UID> is your Copernicus Climate Data Store User ID, and <KEY> is your API
+Key, you can find them both in your profile.
+
+In order to build the docker image locally and use it instead, try the following:
+
+```
+cd backend/docker
+docker build -t wolfshark .
+docker run --name wolfshark -d -p 5000:5000 -e API_KEY=<UID>:<KEY> wolfshark
+```
 
