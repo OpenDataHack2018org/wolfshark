@@ -50,7 +50,6 @@
                     <p>
                         Please make sure, prior to using this app, to accept all relevant
                         dataset licenses under your account, so your API key can be immediately
-                        dataset licenses under your account, so your API key can be immediately
                         used. Please find (possibly incomplete list) below:
                     </p>
                     <hr>
